@@ -5,8 +5,8 @@
 # Home page
 GET     /                           controllers.Application.indexRedirect
 GET     /index                      controllers.Application.index
-GET     /games                      controllers.Application.games
-GET     /games/:name                controllers.Application.displayGame(name: String)
+GET     /games                      controllers.Games.games
+GET     /games/:name                controllers.Games.displayGame(name: String)
 GET     /about                      controllers.Application.page
 GET     /basket                     controllers.Application.basket
 

@@ -1,9 +1,33 @@
-@(message: String)(implicit flash: Flash)
+@(products: Array[(String, String, String, Double, Array[String])])
 
 
-@main("Welcome to Play") {
+@main("Becky's Games: Our Games") {
 
-    <ul><li>@message</li>
-        <li>New page</li></ul>
+    <div id="games" class="row list-group">
+        @for(product <- products) {
+            <div class="item  col-xs-4 col-lg-4">
+                <div class="thumbnail">
+                    <a href=@{s"/games/name?name=${product._1}"}>
+                    <img class="group list-group-image" src=@routes.Assets.at(s"images/${product._3}") alt=@{product._3} style="width:100px; height:100px;" />
+                    <div class="caption">
+                        <h4 class="group inner list-group-item-heading">
+                        @product._1</h4>
+                        <p class="group inner list-group-item-text">
+                        @product._2</p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead">
+                                @{f"£${product._4}%3.2f"}</p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <a class="btn btn-success" href="#">Add to cart<span class="glyphicon glyphicon-shopping-cart"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
 
 }

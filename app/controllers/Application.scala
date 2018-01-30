@@ -19,19 +19,9 @@ class Application extends Controller {
       Redirect("/index")
   }
 
-  def games = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.games("List of games"))
-  }
-
   def page = Action {
     implicit request: Request[AnyContent] =>
       Ok(views.html.about("Hello world!"))
-  }
-
-  def displayGame(game: String) = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(s"$game is not currently in stock. Please come back later.")
   }
 
   def plannedUpdates = Action {
