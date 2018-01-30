@@ -6,7 +6,12 @@ class Application extends Controller {
 
   def index = Action {
     implicit request: Request[AnyContent] =>
-      Ok(views.html.index("Hello world!"))
+      Ok(views.html.index("Welcome!"))
+  }
+
+  def basket = Action {
+    implicit request: Request[AnyContent] =>
+      Ok(views.html.basket("Your items"))
   }
 
   def indexRedirect = Action {
@@ -14,19 +19,24 @@ class Application extends Controller {
       Redirect("/index")
   }
 
-  def plannedUpdates = Action {
+  def games = Action {
     implicit request: Request[AnyContent] =>
-      Ok("Planned technical updates. Please come back later.")
+      Ok(views.html.games("List of games"))
   }
 
   def page = Action {
     implicit request: Request[AnyContent] =>
-      Ok(<ul><li>Hello world!</li><li>New page</li></ul>).as(HTML)
+      Ok(views.html.about("Hello world!"))
   }
 
   def displayGame(game: String) = Action {
     implicit request: Request[AnyContent] =>
       Ok(s"$game is not currently in stock. Please come back later.")
+  }
+
+  def plannedUpdates = Action {
+    implicit request: Request[AnyContent] =>
+      Ok(views.html.index("Planned technical updates. Please come back later."))
   }
 
 }
