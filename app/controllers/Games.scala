@@ -22,9 +22,15 @@ class Games extends Controller {
       Ok(views.html.games(gamesList, category))
   }
 
-  def displayGame(game: String) = Action {
+  def displayGame(gameName: String) = Action {
     implicit request: Request[AnyContent] =>
-      Ok(views.html.blank(s"$game is not currently in stock. Please come back later."))
+      Ok(views.html.item(findGameByName(gameName)))
   }
+
+  def findGameByName(gameName: String) =
+    gamesList.find(_._1 == gameName) match {
+      case Some(game) => game
+      case None => ("missing", "no description", "blank.jpg", 0.0, Array(""))
+    }
 
 }
