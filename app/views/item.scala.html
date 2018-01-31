@@ -4,32 +4,26 @@
 @main(product._2) {
     <div class="container">
         <div class="row">
-            <div class="col-6">
-            <a href=@{s"/products/${product._1}"}>
+            <div class="col-md-6">
                 <img class="group list-group-image" src=@routes.Assets.at(s"images/${product._4}") alt=@{product._4} style="width: 400px; height: 400px;" />
-            </a>
             </div>
-            <div class="col-6">
-                <div class="caption" style="text-align: center;">
-                    <a href=@{s"/products/${product._1}"}>
-                        <h4 class="group inner list-group-item-heading">
-                        @product._2
-                        </h4>
-                    </a>
-                    <p class="group inner list-group-item-text">
+            <div class="col-md-6">
+                <h4 class="group inner list-group-item-heading">
+                    @product._2
+                </h4>
+                <p class="group inner list-group-item-text">
                     @product._3
-                    </p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                            @{f"£${product._5}%3.2f"}
-                            </p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="#">
-                                Add to cart<span class="glyphicon glyphicon-shopping-cart"></span>
-                            </a>
-                        </div>
+                </p>
+                <div class="row">
+                    <div class="col-xs-12 col-md-3">
+                        <p class="lead">
+                        @{f"£${product._5}%3.2f"}
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <a class="btn btn-success" href="#">
+                            Add to cart<span class="glyphicon glyphicon-shopping-cart"></span>
+                        </a>
                     </div>
                 </div>
             </div>
