@@ -25,15 +25,17 @@ class Games extends Controller {
     Ok(views.html.item(findGameByName(gameName)))
   }
 
-  def findGameByName(gameName: String) =
-    gamesList.find(_.id == gameName) match {
+  def findGameByName(gameName: String) = gamesList.find(_.id == gameName) match {
       case Some(game) => game
       case None => gameItem("missing", "missing", "blank.jpg", "no description", "no description", 0.0, List(""))
     }
 
+  def findGamesFromSearch(searchTerm: String) = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))
+
   def searchGames() = Action { implicit request: Request[AnyContent] =>
     val searchTerm = request.body.asFormUrlEncoded.get("searchField").head
-    Ok(views.html.search(searchTerm))
+    val matchingGames = findGamesFromSearch(searchTerm)
+    Ok(views.html.search(searchTerm, matchingGames))
   }
 
 }

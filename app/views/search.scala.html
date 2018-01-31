@@ -1,9 +1,43 @@
-@(searchTerm: String)
+@(searchTerm: String, products: List[gameItem])
 
 
-@main("Welcome to Play") {
+@main(s"Search for '$searchTerm'") {
 
-    <ul><li>@searchTerm</li>
-        <li>New page</li></ul>
+    <h5>Results matching '@searchTerm'</h5>
+    @if(products.isEmpty) {
+        <p>No results found</p>
+    } else {
+        @for(product <- products) {
+            <div class="item  col-xs-4 col-lg-4">
+                <div class="thumbnail">
+                    <a href=@{s"/products/${product.id}"}>
+                        <img class="group list-group-image" src=@routes.Assets.at(s"images/${product.imageUrl}") alt=@{product.imageUrl} style="width: 100px; height: 100px;" />
+                    </a>
+                    <div class="caption" style="text-align: center;">
+                        <a href=@{s"/products/${product.id}"}>
+                            <h4 class="group inner list-group-item-heading">
+                            @product.name
+                            </h4>
+                        </a>
+                        <p class="group inner list-group-item-text">
+                        @product.shortDescr
+                        </p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead">
+                                @{f"£${product.price}%3.2f"}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <a class="btn btn-success" href="#">
+                                        Add to cart<span class="glyphicon glyphicon-shopping-cart"></span>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 
 }
