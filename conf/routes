@@ -3,13 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.indexRedirect
-GET     /index                      controllers.Application.index
-GET     /games                      controllers.Games.games
-GET     /games/:category            controllers.Games.gamesByCategory(category: String)
-GET     /products/:name             controllers.Games.displayGame(name: String)
-GET     /about                      controllers.Application.page
-GET     /basket                     controllers.Application.basket
+GET         /                       controllers.Application.indexRedirect
+GET         /index                  controllers.Application.index
+GET         /games                  controllers.Games.games
+GET         /games/:category        controllers.Games.gamesByCategory(category: String)
+GET         /products/:name         controllers.Games.displayGame(name: String)
+GET         /about                  controllers.Application.page
+GET         /basket                 controllers.Application.basket
+POST        /search                 controllers.Games.searchGames
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file           controllers.Assets.at(path="/public", file)

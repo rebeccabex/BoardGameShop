@@ -12,19 +12,16 @@ class Games extends Controller {
     ("agricola", "Agricola", "17th Farming game", "agricola.jpg", 60.0, Array("onePlayer", "strategy"))
   )
 
-  def games = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.games(gamesList, "all"))
+  def games = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.games(gamesList, "all"))
   }
 
-  def gamesByCategory(category: String) = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.games(gamesList, category))
+  def gamesByCategory(category: String) = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.games(gamesList, category))
   }
 
-  def displayGame(gameName: String) = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.item(findGameByName(gameName)))
+  def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.item(findGameByName(gameName)))
   }
 
   def findGameByName(gameName: String) =
@@ -32,5 +29,10 @@ class Games extends Controller {
       case Some(game) => game
       case None => ("missing", "missing", "no description", "blank.jpg", 0.0, Array(""))
     }
+
+  def searchGames() = Action { implicit request: Request[AnyContent] =>
+    val searchTerm = request.body.asFormUrlEncoded.get("searchField")(0)
+    Ok(views.html.search(searchTerm))
+  }
 
 }
