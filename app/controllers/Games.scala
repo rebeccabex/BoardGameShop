@@ -1,15 +1,16 @@
 package controllers
 
+import models.gameItem
 import play.api.mvc.{Action, AnyContent, Controller, Request}
 
 class Games extends Controller {
 
-  val gamesList = Array(
-    ("hive", "Hive", "Insect tile game", "hive.jpg", 20.0, Array("twoPlayer", "strategy")),
-    ("scythe", "Scythe", "Area control and resource management game", "scythe.jpg", 70.0, Array("onePlayer", "strategy")),
-    ("love-letter", "Love Letter", "Fast playing card game", "loveLetter.jpg", 12.0, Array("family", "quick")),
-    ("celestia", "Celestia", "Airship adventure game", "celestia.jpg", 28.0, Array("family", "strategy")),
-    ("agricola", "Agricola", "17th Farming game", "agricola.jpg", 60.0, Array("onePlayer", "strategy"))
+  val gamesList = List(
+    gameItem("hive", "Hive", "hive.jpg", "Insect tile game", "Insect tile game", 20.0, List("twoPlayer", "strategy")),
+    gameItem("scythe", "Scythe", "scythe.jpg", "Area control and resource management game", "Area control and resource management game", 70.0, List("onePlayer", "strategy")),
+    gameItem("love-letter", "Love Letter", "loveLetter.jpg", "Fast playing card game", "Fast playing card game", 12.0, List("family", "quick")),
+    gameItem("celestia", "Celestia", "celestia.jpg", "Airship adventure game", "Airship adventure game", 28.0, List("family", "strategy")),
+    gameItem("agricola", "Agricola", "agricola.jpg", "17th Farming game", "17th Farming game", 60.0, List("onePlayer", "strategy"))
   )
 
   def games = Action { implicit request: Request[AnyContent] =>
@@ -25,13 +26,13 @@ class Games extends Controller {
   }
 
   def findGameByName(gameName: String) =
-    gamesList.find(_._1 == gameName) match {
+    gamesList.find(_.id == gameName) match {
       case Some(game) => game
-      case None => ("missing", "missing", "no description", "blank.jpg", 0.0, Array(""))
+      case None => gameItem("missing", "missing", "blank.jpg", "no description", "no description", 0.0, List(""))
     }
 
   def searchGames() = Action { implicit request: Request[AnyContent] =>
-    val searchTerm = request.body.asFormUrlEncoded.get("searchField")(0)
+    val searchTerm = request.body.asFormUrlEncoded.get("searchField").head
     Ok(views.html.search(searchTerm))
   }
 

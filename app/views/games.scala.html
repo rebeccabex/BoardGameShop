@@ -1,29 +1,29 @@
-@(products: Array[(String, String, String, String, Double, Array[String])], tag: String)
+@(products: List[gameItem], tag: String)
 
 
 @main("Becky's Games: Our Games") {
 
     <div id="games" class="row list-group">
         @for(product <- products) {
-            @if(tag == "all" || product._6.contains(tag)) {
+            @if(tag == "all" || product.tags.contains(tag)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">
-                        <a href=@{s"/products/${product._1}"}>
-                            <img class="group list-group-image" src=@routes.Assets.at(s"images/${product._4}") alt=@{product._4} style="width: 100px; height: 100px;" />
+                        <a href=@{s"/products/${product.id}"}>
+                            <img class="group list-group-image" src=@routes.Assets.at(s"images/${product.imageUrl}") alt=@{product.imageUrl} style="width: 100px; height: 100px;" />
                         </a>
                         <div class="caption" style="text-align: center;">
-                            <a href=@{s"/products/${product._1}"}>
+                            <a href=@{s"/products/${product.id}"}>
                                 <h4 class="group inner list-group-item-heading">
-                                    @product._2
+                                    @product.name
                                 </h4>
                             </a>
                             <p class="group inner list-group-item-text">
-                                @product._3
+                                @product.shortDescr
                             </p>
                             <div class="row">
                                 <div class="col-xs-12 col-md-6">
                                     <p class="lead">
-                                        @{f"£${product._5}%3.2f"}
+                                        @{f"£${product.price}%3.2f"}
                                     </p>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
