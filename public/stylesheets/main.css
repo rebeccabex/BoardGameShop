@@ -1,0 +1,27 @@
+body {
+    background-color: azure;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.navbar {
+    background-color: #1b1e21;
+}
+
+.navbar.navbar-default div.container-fluid div.navbar-header a.navbar-brand {
+    color: white;
+}
+
+.navbar.navbar-default div.container-fluid ul.nav.navbar-nav li.nav-item a {
+    color: white;
+}
+
+.navbar.navbar-default div.container-fluid ul.nav.navbar-nav li.dropdown a#navbarDropdown.dropdown-toggle {
+    color: white;
+}

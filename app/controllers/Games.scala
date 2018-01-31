@@ -5,6 +5,7 @@ import play.api.mvc.{Action, AnyContent, Controller, Request}
 
 class Games extends Controller {
 
+  val nullItem = gameItem("missing", "missing", "blank.jpg", "no description", "no description", 0.0, List(""))
   val gamesList = List(
     gameItem("hive", "Hive", "hive.jpg", "Insect tile game", "Insect tile game", 20.0, List("twoPlayer", "strategy")),
     gameItem("scythe", "Scythe", "scythe.jpg", "Area control and resource management game", "Area control and resource management game", 70.0, List("onePlayer", "strategy")),
@@ -27,7 +28,7 @@ class Games extends Controller {
 
   def findGameByName(gameName: String) = gamesList.find(_.id == gameName) match {
       case Some(game) => game
-      case None => gameItem("missing", "missing", "blank.jpg", "no description", "no description", 0.0, List(""))
+      case None => nullItem
     }
 
   def findGamesFromSearch(searchTerm: String) = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))
