@@ -6,6 +6,7 @@
 GET         /                       controllers.Application.indexRedirect
 GET         /index                  controllers.Application.index
 GET         /games                  controllers.Games.games
+POST        /games                  controllers.Games.gamesFiltered
 GET         /games/:category        controllers.Games.gamesByCategory(category: String)
 GET         /products/:name         controllers.Games.displayGame(name: String)
 GET         /about                  controllers.Application.page

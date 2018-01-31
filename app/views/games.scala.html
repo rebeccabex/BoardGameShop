@@ -1,36 +1,50 @@
-@(products: List[gameItem], tag: String)
-
+@(products: List[GameItem], filter: GameFilter)
 
 @main("Becky's Games: Our Games") {
 
     <div id="options" class="container">
         <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="minPlayers">Min players:</label>
-                    <select class="form-control" id="minPlayers">
-                        @for(i <- 1 to 5) {
-                            <option>@i</option>
-                        }
-                    </select>
+            <form onclick="/game" method="post">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="minPlayers">Min players:</label>
+                        <select class="form-control" id="minPlayers" name="minPlayers">
+                            @for(i <- 1 to 8) {
+                                @if(i == filter.minPlayers) {
+                                    <option selected="selected">@i</option>
+                                } else {
+                                    <option>@i</option>
+                                }
+                            }
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="maxPlayers">Max players:</label>
-                    <select class="form-control" id="maxPlayers">
-                        @for(i <- 1 to 5) {
-                            <option>@i</option>
-                        }
-                    </select>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="maxPlayers">Max players:</label>
+                        <select class="form-control" id="maxPlayers" name="maxPlayers">
+                            @for(i <- 1 to 8) {
+                                @if(i == filter.maxPlayers) {
+                                    <option selected="selected">@i</option>
+                                } else {
+                                <option>@i</option>
+                                }
+                            }
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
     <div id="games" class="row list-group">
         @for(product <- products) {
-            @if(tag == "all" || product.tags.contains(tag)) {
+            @if(filter.tags.isEmpty || product.tags.containsSlice(filter.tags)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">
                         <a href=@{s"/products/${product.id}"}>
