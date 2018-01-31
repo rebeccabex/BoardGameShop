@@ -3,6 +3,31 @@
 
 @main("Becky's Games: Our Games") {
 
+    <div id="options" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="minPlayers">Min players:</label>
+                    <select class="form-control" id="minPlayers">
+                        @for(i <- 1 to 5) {
+                            <option>@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="maxPlayers">Max players:</label>
+                    <select class="form-control" id="maxPlayers">
+                        @for(i <- 1 to 5) {
+                            <option>@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="games" class="row list-group">
         @for(product <- products) {
             @if(tag == "all" || product.tags.contains(tag)) {
@@ -17,9 +42,6 @@
                                     @product.name
                                 </h4>
                             </a>
-                            <p class="group inner list-group-item-text">
-                                @product.shortDescr
-                            </p>
                             <div class="row">
                                 <div class="col-xs-12 col-md-6">
                                     <p class="lead">
