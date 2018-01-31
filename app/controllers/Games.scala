@@ -26,9 +26,17 @@ class Games extends Controller {
     val filters = request.body.asFormUrlEncoded.get
     var filteredList = gamesList
 
-    filteredList = gamesList.filter( game => game.maxPlayers >= filters("minPlayers").head.toInt && game.minPlayers <= filters("maxPlayers").head.toInt)
+    println(request)
 
-    val f = GameFilter("", filters("minPlayers").head.toInt, filters("maxPlayers").head.toInt, 0.0, 1000.0, ArrayBuffer())
+    val minPlayers = filters("minPlayers").head.toInt
+    val maxPlayers = filters("maxPlayers").head.toInt
+    val minPrice = filters("minPrice").head.toDouble
+    val maxPrice = filters("maxPrice").head.toDouble
+
+    filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
+    filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
+
+    val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, ArrayBuffer())
 
     Ok(views.html.games(filteredList, f))
   }
