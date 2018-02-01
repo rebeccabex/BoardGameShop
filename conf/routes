@@ -7,6 +7,7 @@ GET         /                       controllers.Application.indexRedirect
 GET         /index                  controllers.Application.index
 
 GET         /games                  controllers.Games.games
+GET         /games-page:pgno        controllers.Games.gamesPage(pgno: Int)
 POST        /games                  controllers.Games.gamesFiltered
 GET         /games/:category        controllers.Games.gamesByCategory(category: String)
 POST        /games/:category        controllers.Games.filterGamesByCategory(category: String)

@@ -12,9 +12,13 @@ class Games extends Controller {
 
   def games = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
-    println(request)
-
     Ok(views.html.games(gamesList, filter))
+  }
+
+  // current default is 9 games per page
+  def gamesPage(pgNo: Int) = Action { implicit request: Request[AnyContent] =>
+    filter.tags.clear()
+    Ok(views.html.games(gamesList.slice((pgNo - 1) * 9, pgNo * 9), filter))
   }
 
   def gamesFiltered = Action { implicit request: Request[AnyContent] =>
