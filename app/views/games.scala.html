@@ -1,4 +1,4 @@
-@(products: List[GameItem], filter: GameFilter)
+@(products: List[GameItem], filter: GameFilter, pgNo: Int)
 
 @main("Becky's Games: Our Games") {
 
@@ -8,10 +8,10 @@
                 <div class="col-md-2">
                     <ul class="pagination">
                         @for(i <- 1 to (products.size/9 + 1)) {
-                            @if(i == 1) {
+                            @if(i == pgNo) {
                                 <li class="active"><a href=@{s"/games-page$i"}>@i</a></li>
                             } else {
-                                <a href="@{s"/games-page$i"}">@i</a></li>
+                                <li><a href="@{s"/games-page$i"}">@i</a></li>
                             }
                         }
                     </ul>
@@ -74,7 +74,7 @@
     </div>
 
     <div id="games" class="row list-group">
-        @for(product <- products.sortBy(_.name)) {
+        @for(product <- products.sortBy(_.name).slice((pgNo - 1) * 9, pgNo * 9)) {
             @if(filter.tags.isEmpty || product.tags.containsSlice(filter.tags)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">

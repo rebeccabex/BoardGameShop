@@ -12,13 +12,13 @@ class Games extends Controller {
 
   def games = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
-    Ok(views.html.games(gamesList, filter))
+    Ok(views.html.games(gamesList, filter, 1))
   }
 
   // current default is 9 games per page
   def gamesPage(pgNo: Int) = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
-    Ok(views.html.games(gamesList.slice((pgNo - 1) * 9, pgNo * 9), filter))
+    Ok(views.html.games(gamesList, filter, pgNo))
   }
 
   def gamesFiltered = Action { implicit request: Request[AnyContent] =>
@@ -35,7 +35,7 @@ class Games extends Controller {
 
     val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, filter.tags)
 
-    Ok(views.html.games(filteredList, f))
+    Ok(views.html.games(filteredList, f, 1))
   }
 
   def filterGamesByCategory(category: String) = {
@@ -47,7 +47,7 @@ class Games extends Controller {
   def gamesByCategory(category: String) = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
     filter.tags += category
-    Ok(views.html.games(gamesList, filter))
+    Ok(views.html.games(gamesList, filter, 1))
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
