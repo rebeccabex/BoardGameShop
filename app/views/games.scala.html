@@ -4,22 +4,30 @@
 
     <div id="options" class="container">
         <div class="row">
-            <form onclick="/game" method="post">
-                <div class="col-md-2">
-                    <ul class="pagination">
-                        @for(i <- 1 to (products.size/9 + 1)) {
-                            @if(i == pgNo) {
-                                <li class="active"><a href=@{s"/games-page$i"}>@i</a></li>
-                            } else {
-                                <li><a href="@{s"/games-page$i"}">@i</a></li>
-                            }
+            <div class="col-md-2 col-lg-2">
+                <ul class="pagination">
+                    @for(i <- 1 to (products.size/9 + 1)) {
+                        @if(i == pgNo) {
+                            <li class="active"><a href=@{s"/games-page$i"}>@i</a></li>
+                        } else {
+                            <li><a href="@{s"/games-page$i"}">@i</a></li>
                         }
-                    </ul>
+                    }
+                </ul>
+            </div>
+            <form onclick="/games" method="post">
+                <div class="col-md-2 col-lg-2">
+                    <div class="form-group">
+                        <label for="sortBy">Sort by:</label>
+                        <select class="form-control" id="sortBy" name="sortBy">
+                            <option selected="selected">A-Z</option>
+                            <option>Z-A</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    (sort by)
-                </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <div class="form-group">
                         <label for="minPlayers">Min players:</label>
                         <select class="form-control" id="minPlayers" name="minPlayers">
@@ -33,7 +41,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <div class="form-group">
                         <label for="maxPlayers">Max players:</label>
                         <select class="form-control" id="maxPlayers" name="maxPlayers">
@@ -47,25 +55,25 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <div class="form-group">
                         <label for="minPrice">Min price:</label>
                         <input type="text" id="minPrice" name="minPrice" class="form-control" value=@filter.minPrice>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <div class="form-group">
                         <label for="maxPrice">Max price:</label>
                         <input type="text" id="maxPrice" name="maxPrice" class="form-control" value=@{f"${filter.maxPrice}%3.2f"}>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <button type="submit" class="btn btn-default">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
-                <div class="col-md-1">
+                <div class="col-md-1 col-lg-1">
                     <a href="/games">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
