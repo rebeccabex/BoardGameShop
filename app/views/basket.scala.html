@@ -4,41 +4,51 @@
 @main("Your shopping basket") {
 
     <div class="row">
-        <div class="col-md-8">
-            @if(shoppingBasket.isEmpty) {
-                <h4>You have no items in your basket. <a href="/games">Continue shopping</a></h4>
-            } else {
-                @for(product <- shoppingBasket) {
-                    <div class="panel">
-                        <div class="row">
-                            <div class="col-md-4">
+        @if(shoppingBasket.isEmpty) {
+            <h4>You have no items in your basket. <a href="/games">Continue shopping</a></h4>
+        } else {
+            <div class="col-md-8">
+            @for((product, q) <- shoppingBasket.groupBy(identity).mapValues(_.size)) {
+                <div class="panel">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href=@{s"/products/${product.id}"}>
                                 <img class="group list-group-image" src=@routes.Assets.at(s"images/${product.imageUrl}") alt=@{product.imageUrl} style="width: 200px; height: 200px;" />
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <a href=@{s"/products/${product.id}"}>
                                     <h4>@product.name</h4>
-                                </div>
-                                <div class="row">
-                                    <h5>@{f"£${product.price}%3.2f"}</h5>
-                                </div>
-                                <div class="row">
-                                    <a href=@{s"/basket/remove/${product.id}"}>remove from basket</a>
-                                </div>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <h5>Item cost: @{f"£${product.price}%3.2f"}</h5>
+                            </div>
+                            <div class="row">
+                                <h5>Quantity: @q</h5>
+                            </div>
+                            <div class="row">
+                                <h5>Total cost: @{f"£${product.price * q}%3.2f"}</h5>
+                            </div>
+                            <div class="row">
+                                <a href=@{s"/basket/remove/${product.id}"}>remove from basket</a>
                             </div>
                         </div>
                     </div>
-                }
+                </div>
             }
-        </div>
-        <div class="col-md-4">
-            <a href="/payment">
-            <button type="button" class="btn-primary" style="width: 150px; height: 60px">Pay</button>
-            </a>
-            <a href="/basket/remove-all">
-            <button type="button" class="btn-warning" style="width: 150px; height: 60px">Clear basket</button>
-            </a>
-            <p>Total cost: @{f"£${shoppingBasket.map(_.price).sum}%3.2f"}</p>
-            <p>Number of items: @shoppingBasket.size</p>
-        </div>
+            </div>
+            <div class="col-md-4">
+                <a href="/payment">
+                <button type="button" class="btn-primary" style="width: 150px; height: 60px">Pay</button>
+                </a>
+                <a href="/empty-basket">
+                <button type="button" class="btn-warning" style="width: 150px; height: 60px">Clear basket</button>
+                </a>
+                <p>Total cost: @{f"£${shoppingBasket.map(_.price).sum}%3.2f"}</p>
+                <p>Number of items: @shoppingBasket.size</p>
+            </div>
+        }
     </div>
 }
