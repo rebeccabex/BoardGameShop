@@ -14,19 +14,19 @@ class Games extends Controller {
     GameItem("scythe", "Scythe", "scythe.jpg", "Area control and resource management game", 70.0, 1, 5, List("onePlayer", "strategy")),
     GameItem("love-letter", "Love Letter", "loveLetter.jpg", "Fast playing card game", 12.0, 2, 4, List("family", "quick")),
     GameItem("celestia", "Celestia", "celestia.jpg", "Airship adventure game", 28.0, 2, 6, List("family", "strategy")),
-    GameItem("agricola", "Agricola", "agricola.jpg", "17th Farming game", 60.0, 1, 5, List("onePlayer", "strategy"))
+    GameItem("agricola", "Agricola", "agricola.jpg", "17th century farming game", 60.0, 1, 5, List("onePlayer", "strategy"))
   )
 
   def games = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
+    println(request)
+
     Ok(views.html.games(gamesList, filter))
   }
 
   def gamesFiltered = Action { implicit request: Request[AnyContent] =>
     val filters = request.body.asFormUrlEncoded.get
     var filteredList = gamesList
-
-    println(request)
 
     val minPlayers = filters("minPlayers").head.toInt
     val maxPlayers = filters("maxPlayers").head.toInt
@@ -36,9 +36,15 @@ class Games extends Controller {
     filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
     filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
 
-    val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, ArrayBuffer())
+    val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, filter.tags)
 
     Ok(views.html.games(filteredList, f))
+  }
+
+  def filterGamesByCategory(category: String) = {
+    filter.tags.clear()
+    filter.tags += category
+    gamesFiltered
   }
 
   def gamesByCategory(category: String) = Action { implicit request: Request[AnyContent] =>
