@@ -74,12 +74,21 @@ class Games extends Controller {
 
   def addItemToBasket(item: String) = Action { implicit request: Request[AnyContent] =>
     shoppingBasket += findGameById(item)
+    Redirect(routes.Games.basket())
+  }
+
+  def basket = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.basket(shoppingBasket))
   }
 
-  def basket = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.basket(shoppingBasket))
+  def removeItemFromBasket(item: String) = Action { implicit request: Request[AnyContent] =>
+    shoppingBasket -= findGameById(item)
+    Redirect(routes.Games.basket())
+  }
+
+  def removeAllFromBasket() = Action { implicit request: Request[AnyContent] =>
+    shoppingBasket.clear()
+    Redirect(routes.Games.basket())
   }
 
 }
