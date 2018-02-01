@@ -14,10 +14,10 @@ GET         /products/:name         controllers.Games.displayGame(name: String)
 GET         /about                  controllers.Application.page
 POST        /search                 controllers.Games.searchGames
 
-GET         /basket                 controllers.Games.basket
-GET         /basket/:itemName       controllers.Games.addItemToBasket(itemName: String)
-GET         /basket/remove/:itemName    controllers.Games.removeItemFromBasket(itemName: String)
-GET         /empty-basket           controllers.Games.removeAllFromBasket
+GET         /basket                 controllers.Basket.basket
+GET         /basket/:itemName       controllers.Basket.addItemToBasket(itemName: String)
+GET         /basket/remove/:itemName    controllers.Basket.removeItemFromBasket(itemName: String)
+GET         /empty-basket           controllers.Basket.removeAllFromBasket
 GET         /payment                controllers.Application.pay
 
 # Map static resources from the /public folder to the /assets URL path

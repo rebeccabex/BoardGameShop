@@ -2,20 +2,13 @@ package controllers
 
 import models.{GameFilter, GameItem}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
+import models.GameItem.gamesList
 
 import scala.collection.mutable.ArrayBuffer
 
 class Games extends Controller {
 
-  val nullItem = GameItem("missing", "missing", "blank.jpg", "no description", 0.0, 0, 0, List(""))
   val filter = GameFilter("", 1, 8, 0.0, 1000.0, ArrayBuffer())
-  val gamesList = List(
-    GameItem("hive", "Hive", "hive.jpg", "Insect tile game", 20.0, 2, 2, List("twoPlayer", "strategy")),
-    GameItem("scythe", "Scythe", "scythe.jpg", "Area control and resource management game", 70.0, 1, 5, List("onePlayer", "strategy")),
-    GameItem("love-letter", "Love Letter", "loveLetter.jpg", "Fast playing card game", 12.0, 2, 4, List("family", "quick")),
-    GameItem("celestia", "Celestia", "celestia.jpg", "Airship adventure game", 28.0, 2, 6, List("family", "strategy")),
-    GameItem("agricola", "Agricola", "agricola.jpg", "17th century farming game", 60.0, 1, 5, List("onePlayer", "strategy"))
-  )
 
   def games = Action { implicit request: Request[AnyContent] =>
     filter.tags.clear()
@@ -54,15 +47,8 @@ class Games extends Controller {
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.item(findGameById(gameName)))
+    Ok(views.html.item(GameItem.findGameById(gameName)))
   }
-
-  def findGameById(gameName: String) = gamesList.find(_.id == gameName) match {
-      case Some(game) => game
-      case None => nullItem
-    }
-
-  def findGamesFromSearch(searchTerm: String): List[GameItem] = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))
 
   def searchGames() = Action { implicit request: Request[AnyContent] =>
     val searchTerm = request.body.asFormUrlEncoded.get("searchField").head
@@ -70,25 +56,6 @@ class Games extends Controller {
     Ok(views.html.search(searchTerm, matchingGames))
   }
 
-  val shoppingBasket = ArrayBuffer[GameItem]()
-
-  def addItemToBasket(item: String) = Action { implicit request: Request[AnyContent] =>
-    shoppingBasket += findGameById(item)
-    Redirect(routes.Games.basket())
-  }
-
-  def basket = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.basket(shoppingBasket))
-  }
-
-  def removeItemFromBasket(item: String) = Action { implicit request: Request[AnyContent] =>
-    shoppingBasket -= findGameById(item)
-    Redirect(routes.Games.basket())
-  }
-
-  def removeAllFromBasket() = Action { implicit request: Request[AnyContent] =>
-    shoppingBasket.clear()
-    Redirect(routes.Games.basket())
-  }
+  def findGamesFromSearch(searchTerm: String): List[GameItem] = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))
 
 }
