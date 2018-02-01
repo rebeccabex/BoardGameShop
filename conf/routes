@@ -12,10 +12,10 @@ GET         /games/:category        controllers.Games.gamesByCategory(category: 
 POST        /games/:category        controllers.Games.filterGamesByCategory(category: String)
 GET         /products/:name         controllers.Games.displayGame(name: String)
 GET         /about                  controllers.Application.page
-GET         /basket                 controllers.Application.basket
 POST        /search                 controllers.Games.searchGames
 
-
+GET         /basket                 controllers.Games.basket
+GET         /basket/:itemName       controllers.Games.addItemToBasket(itemName: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file           controllers.Assets.at(path="/public", file)

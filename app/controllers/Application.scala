@@ -9,11 +9,6 @@ class Application extends Controller {
       Ok(views.html.index("Welcome!"))
   }
 
-  def basket = Action {
-    implicit request: Request[AnyContent] =>
-      Ok(views.html.basket("Your items"))
-  }
-
   def indexRedirect = Action {
     implicit request: Request[AnyContent] =>
       Redirect("/index")

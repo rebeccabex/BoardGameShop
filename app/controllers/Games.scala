@@ -54,10 +54,10 @@ class Games extends Controller {
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.item(findGameByName(gameName)))
+    Ok(views.html.item(findGameById(gameName)))
   }
 
-  def findGameByName(gameName: String) = gamesList.find(_.id == gameName) match {
+  def findGameById(gameName: String) = gamesList.find(_.id == gameName) match {
       case Some(game) => game
       case None => nullItem
     }
@@ -68,6 +68,18 @@ class Games extends Controller {
     val searchTerm = request.body.asFormUrlEncoded.get("searchField").head
     val matchingGames = findGamesFromSearch(searchTerm)
     Ok(views.html.search(searchTerm, matchingGames))
+  }
+
+  val shoppingBasket = ArrayBuffer[GameItem]()
+
+  def addItemToBasket(item: String) = Action { implicit request: Request[AnyContent] =>
+    shoppingBasket += findGameById(item)
+    Ok(views.html.basket(shoppingBasket))
+  }
+
+  def basket = Action {
+    implicit request: Request[AnyContent] =>
+      Ok(views.html.basket(shoppingBasket))
   }
 
 }

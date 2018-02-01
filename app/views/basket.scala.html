@@ -1,9 +1,35 @@
-@(message: String)(implicit flash: Flash)
+@(shoppingBasket: scala.collection.mutable.ArrayBuffer[GameItem])
 
 
-@main("Welcome to Play") {
+@main("Your shopping basket") {
 
-    <ul><li>@message</li>
-        <li>New page</li></ul>
 
+    <div class="row">
+        <div class="col-md-8">
+            @for(product <- shoppingBasket) {
+                <div class="panel">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="group list-group-image" src=@routes.Assets.at(s"images/${product.imageUrl}") alt=@{product.imageUrl} style="width: 200px; height: 200px;" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <h4>@product.name</h4>
+                            </div>
+                            <div class="row">
+                                <h5>@{f"£${product.price}%3.2f"}</h5>
+                            </div>
+                            <div class="row">
+                                <a href="#">remove from basket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            <p>Total cost: @{f"£${shoppingBasket.map(_.price).sum}%3.2f"}</p>
+            <p>Number of items: @shoppingBasket.size</p>
+        </div>
+    </div>
 }
