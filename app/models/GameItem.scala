@@ -25,7 +25,7 @@ object GameItem {
 
   val nullItem = GameItem("missing", "missing", "blank.jpg", "no description", 0.0, 0, 0, List(""))
 
-  def findGameById(gameName: String) = gamesList.find(_.id == gameName) match {
+  def findGameById(gameName: String): GameItem = gamesList.find(_.id == gameName) match {
     case Some(game) => game
     case None => GameItem.nullItem
   }

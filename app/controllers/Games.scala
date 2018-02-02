@@ -36,7 +36,6 @@ class Games extends Controller {
 
   def gamesFilteredWithPgNo(newPgNo: Int) = Action { implicit request: Request[AnyContent] =>
     val filters = request.body.asFormUrlEncoded.get
-    var filteredList = gamesList
 
     sortBy = filters("sortBy").head
     minPlayers = filters("minPlayers").head.toInt
@@ -44,12 +43,12 @@ class Games extends Controller {
     minPrice = filters("minPrice").head.toDouble
     maxPrice = filters("maxPrice").head.toDouble
 
-    filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
-    filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
+    val f = setFilter(pageNumber = newPgNo)
+    var filteredList = filterGames(gamesList, f)
+    //    filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
+//    filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
 
     filteredList = sortGames(filteredList, sortBy)
-
-    val f = setFilter(pageNumber = newPgNo)
 
     Ok(views.html.games(paginateGames(sortGames(filteredList)), f))
   }
