@@ -34,15 +34,9 @@ class Games extends Controller {
     filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
     filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
 
+    filteredList = sortGames(filteredList, sortBy)
+
     val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, filter.tags)
-
-    sortBy match {
-      case "A-Z" => filteredList = filteredList.sortBy(_.name)
-      case "Z-A" => filteredList = filteredList.sortBy(_.name).reverse
-      case "Z-A" => filteredList = filteredList.sortBy(_.name).reverse
-      case "Z-A" => filteredList = filteredList.sortBy(_.name).reverse
-    }
-
 
     Ok(views.html.games(filteredList, f, 1))
   }
@@ -51,6 +45,7 @@ class Games extends Controller {
     val filters = request.body.asFormUrlEncoded.get
     var filteredList = gamesList
 
+    val sortBy = filters("sortBy").head
     val minPlayers = filters("minPlayers").head.toInt
     val maxPlayers = filters("maxPlayers").head.toInt
     val minPrice = filters("minPrice").head.toDouble
@@ -59,9 +54,22 @@ class Games extends Controller {
     filteredList = gamesList.filter( game => game.maxPlayers >= minPlayers && game.minPlayers <= maxPlayers)
     filteredList = filteredList.filter(game => game.price >= minPrice && game.price <= maxPrice)
 
+    filteredList = sortGames(filteredList, sortBy)
+
     val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, filter.tags)
 
     Ok(views.html.games(filteredList, f, 1))
+  }
+
+  def sortGames(games: List[GameItem], sortBy: String): List[GameItem] = {
+    var sortedGames = games
+    sortBy match {
+      case "A-Z" => sortedGames = games.sortBy(_.name)
+      case "Z-A" => sortedGames = games.sortBy(_.name).reverse
+      case "Price: Low to High" => sortedGames = games.sortBy(_.price)
+      case "Price: High to Low" => sortedGames = games.sortBy(_.price).reverse
+    }
+    sortedGames
   }
 
   def filterGamesByCategory(category: String) = {

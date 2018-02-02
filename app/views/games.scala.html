@@ -82,7 +82,7 @@
     </div>
 
     <div id="games" class="row list-group">
-        @for(product <- products.sortBy(_.name).slice((pgNo - 1) * 9, pgNo * 9)) {
+        @for(product <- products.slice((pgNo - 1) * 9, pgNo * 9)) {
             @if(filter.tags.isEmpty || product.tags.containsSlice(filter.tags)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">
