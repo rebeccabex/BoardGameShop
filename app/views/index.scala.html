@@ -1,4 +1,4 @@
-@(message: String, basket: List[GameItem])
+@(message: String, basket: List[GameItem], games: List[GameItem])
 
 
 @main("Becky's Games", basket) {
@@ -53,9 +53,18 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <ul>
-        <li>@message</li>
-        <li>New page</li>
-    </ul>
-
+    <h2>@message</h2>
+    <div class="row" style="text-align: center">
+        <h4>Featured games</h4>
+        @for(game <- games.take(4)) {
+            <div class="col-md-3">
+                <a href="@{s"/products/${game.id}"}">
+                    <img class="group list-group-image" src=@routes.Assets.at(s"images/${game.imageUrl}") alt=@{game.imageUrl} style="width: 200px; height: 200px;" />
+                    <p>
+                        @game.name
+                    </p>
+                </a>
+            </div>
+        }
+    </div>
 }

@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET         /                               controllers.Application.indexRedirect
-GET         /index                          controllers.Application.index
+GET         /                               controllers.Application.index
+GET         /index                          controllers.Application.indexRedirect
 
 GET         /games                          controllers.Games.games
 GET         /games-page:pgno                controllers.Games.gamesPage(pgno: Int)
