@@ -1,4 +1,4 @@
-@(products: List[GameItem], filter: GameFilter, pgNo: Int)
+@(products: List[List[GameItem]], filter: GameFilter)
 
 @main("Becky's Games: Our Games") {
 
@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-md-2 col-lg-2">
                 <ul class="pagination">
-                    @for(i <- 1 to (products.size/9 + 1)) {
-                        @if(i == pgNo) {
+                    @for(i <- 1 to products.size) {
+                        @if(i == filter.pgNo) {
                             <li class="active"><a href=@{s"/games-page$i"}>@i</a></li>
                         } else {
                             <li><a href="@{s"/games-page$i"}">@i</a></li>
@@ -20,10 +20,13 @@
                     <div class="form-group">
                         <label for="sortBy">Sort by:</label>
                         <select class="form-control" id="sortBy" name="sortBy">
-                            <option selected="selected">A-Z</option>
-                            <option>Z-A</option>
-                            <option>Price: Low to High</option>
-                            <option>Price: High to Low</option>
+                            @for(i <- List("A-Z", "Z-A", "Price: Low to High", "Price: High to Low")) {
+                                @if(i == filter.sortBy) {
+                                    <option selected="selected">@i</option>
+                                } else {
+                                    <option>@i</option>
+                                }
+                            }
                         </select>
                     </div>
                 </div>
@@ -31,7 +34,7 @@
                     <div class="form-group">
                         <label for="minPlayers">Min players:</label>
                         <select class="form-control" id="minPlayers" name="minPlayers">
-                            @for(i <- 1 to 8) {
+                            @for(i <- 1 to 10) {
                                 @if(i == filter.minPlayers) {
                                     <option selected="selected">@i</option>
                                 } else {
@@ -45,7 +48,7 @@
                     <div class="form-group">
                         <label for="maxPlayers">Max players:</label>
                         <select class="form-control" id="maxPlayers" name="maxPlayers">
-                            @for(i <- 1 to 8) {
+                            @for(i <- 1 to 10) {
                                 @if(i == filter.maxPlayers) {
                                     <option selected="selected">@i</option>
                                 } else {
@@ -82,7 +85,7 @@
     </div>
 
     <div id="games" class="row list-group">
-        @for(product <- products.slice((pgNo - 1) * 9, pgNo * 9)) {
+        @for(product <- products(filter.pgNo - 1)) {
             @if(filter.tags.isEmpty || product.tags.containsSlice(filter.tags)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">
