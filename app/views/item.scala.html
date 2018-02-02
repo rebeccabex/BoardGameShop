@@ -1,4 +1,4 @@
-@(product: GameItem)
+@(product: GameItem, similarGames: List[GameItem])
 
 
 @main(product.name) {
@@ -30,6 +30,22 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <h4 style="text-align: center">You might also like:</h4>
+        <div class="row">
+            @for(game <- similarGames) {
+                <div class="col-md-3" style="text-align: center">
+                    <a href="@{s"/products/${game.id}"}">
+                        <img class="group list-group-image" src=@routes.Assets.at(s"images/${game.imageUrl}") alt=@{game.imageUrl} style="width: 200px; height: 200px;" />
+                        <p>
+                        @game.name
+                        </p>
+                    </a>
+                </div>
+            }
         </div>
     </div>
 }

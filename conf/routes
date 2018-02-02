@@ -3,24 +3,24 @@
 # ~~~~
 
 # Home page
-GET         /                       controllers.Application.indexRedirect
-GET         /index                  controllers.Application.index
+GET         /                               controllers.Application.indexRedirect
+GET         /index                          controllers.Application.index
 
-GET         /games                  controllers.Games.games
-GET         /games-page:pgno        controllers.Games.gamesPage(pgno: Int)
-POST        /games                  controllers.Games.gamesFiltered
-POST        /games-page:pgno        controllers.Games.gamesFilteredWithPgNo(pgno: Int)
-GET         /games/:category        controllers.Games.gamesByCategory(category: String)
-POST        /games/:category        controllers.Games.filterGamesByCategory(category: String)
-GET         /products/:name         controllers.Games.displayGame(name: String)
-GET         /about                  controllers.Application.page
-POST        /search                 controllers.Games.searchGames
+GET         /games                          controllers.Games.games
+GET         /games-page:pgno                controllers.Games.gamesPage(pgno: Int)
+POST        /games                          controllers.Games.gamesFiltered
+POST        /games-page:pgno                controllers.Games.gamesFilteredWithPgNo(pgno: Int)
+GET         /games/:category                controllers.Games.gamesByCategory(category: String)
+POST        /games/:category                controllers.Games.filterGamesByCategory(category: String)
+GET         /products/:name                 controllers.Games.displayGame(name: String)
+GET         /about                          controllers.Application.page
+POST        /search                         controllers.Games.searchGames
 
-GET         /basket                 controllers.Basket.basket
-GET         /basket/:itemName       controllers.Basket.addItemToBasket(itemName: String)
-GET         /basket/remove/:itemName    controllers.Basket.removeItemFromBasket(itemName: String)
-GET         /empty-basket           controllers.Basket.removeAllFromBasket
-GET         /payment                controllers.Application.pay
+GET         /basket                         controllers.Basket.basket
+GET         /basket/:itemName               controllers.Basket.addItemToBasket(itemName: String)
+GET         /basket/remove/:itemName        controllers.Basket.removeItemFromBasket(itemName: String)
+GET         /empty-basket                   controllers.Basket.removeAllFromBasket
+GET         /payment                        controllers.Application.pay
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file           controllers.Assets.at(path="/public", file)
+GET         /assets/*file                   controllers.Assets.at(path="/public", file)

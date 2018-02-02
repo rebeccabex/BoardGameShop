@@ -85,7 +85,23 @@ class Games extends Controller {
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.item(GameItem.findGameById(gameName)))
+    val game = GameItem.findGameById(gameName)
+    val similarGames = findSimilarGames(game)
+    Ok(views.html.item(GameItem.findGameById(gameName), similarGames))
+  }
+
+  def findSimilarGames(game: GameItem): List[GameItem] = {
+    var similarityMap = scala.collection.mutable.Map[GameItem, Int]()
+    for (g <- gamesList) {
+      var count = 0
+      for (tag <- g.tags) {
+        if (game.tags.contains(tag) && g.name != game.name) {
+          count += 1
+        }
+      }
+      similarityMap += (g -> count)
+    }
+    (for (pair <- similarityMap.toSeq.sortWith(_._2 > _._2).take(4)) yield pair._1).toList
   }
 
   def searchGames() = Action { implicit request: Request[AnyContent] =>
