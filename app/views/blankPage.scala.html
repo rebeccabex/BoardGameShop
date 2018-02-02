@@ -1,7 +1,7 @@
-@(message: String)(implicit flash: Flash)
+@(message: String, basket: List[GameItem])
 
 
-@main("Welcome to Play") {
+@main("Welcome to Play", basket) {
 
     <ul><li>@message</li>
         <li>New page</li></ul>

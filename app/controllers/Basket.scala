@@ -28,7 +28,7 @@ class Basket extends Controller {
 
   def pay = Action { implicit request: Request[AnyContent] =>
     shoppingBasket.clear()
-    Ok(views.html.blankPage("You have paid for your items"))
+    Ok(views.html.blankPage("You have paid for your items", shoppingBasket.toList))
   }
 
 }

@@ -1,6 +1,6 @@
 package controllers
 
-import models.{GameFilter, GameItem}
+import models.{GameFilter, GameItem, ShoppingBasket}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
 import models.GameItem.gamesList
 
@@ -19,7 +19,7 @@ class Games extends Controller {
 
   def games = Action { implicit request: Request[AnyContent] =>
     val f = resetFilter()
-    Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f), sortBy)), f))
+    Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f), sortBy)), f, ShoppingBasket.shoppingBasket.toList))
   }
 
   // current default is 9 games per page
@@ -29,7 +29,7 @@ class Games extends Controller {
     val f = setFilter(pageNumber = newPgNo)
     val sortedGames = sortGames(gamesList, f.sortBy)
 
-    Ok(views.html.games(paginateGames(sortedGames), f))
+    Ok(views.html.games(paginateGames(sortedGames), f, ShoppingBasket.shoppingBasket.toList))
   }
 
   def gamesFiltered: Action[AnyContent] = gamesFilteredWithPgNo(1)
@@ -50,7 +50,7 @@ class Games extends Controller {
 
     filteredList = sortGames(filteredList, sortBy)
 
-    Ok(views.html.games(paginateGames(sortGames(filteredList)), f))
+    Ok(views.html.games(paginateGames(sortGames(filteredList)), f, ShoppingBasket.shoppingBasket.toList))
   }
 
   def filterGames(games: List[GameItem], f: GameFilter): List[GameItem] = {
@@ -80,13 +80,13 @@ class Games extends Controller {
     tags.clear()
     tags += category
     val f = setFilter()
-    Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f))), f))
+    Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f))), f, ShoppingBasket.shoppingBasket.toList))
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
     val game = GameItem.findGameById(gameName)
     val similarGames = findSimilarGames(game)
-    Ok(views.html.item(GameItem.findGameById(gameName), similarGames))
+    Ok(views.html.item(GameItem.findGameById(gameName), similarGames, ShoppingBasket.shoppingBasket.toList))
   }
 
   def findSimilarGames(game: GameItem): List[GameItem] = {
@@ -106,7 +106,7 @@ class Games extends Controller {
   def searchGames() = Action { implicit request: Request[AnyContent] =>
     val searchTerm = request.body.asFormUrlEncoded.get("searchField").head
     val matchingGames = findGamesFromSearch(searchTerm)
-    Ok(views.html.search(searchTerm, matchingGames))
+    Ok(views.html.search(searchTerm, matchingGames, ShoppingBasket.shoppingBasket.toList))
   }
 
   def findGamesFromSearch(searchTerm: String): List[GameItem] = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))

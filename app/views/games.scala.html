@@ -1,6 +1,6 @@
-@(products: List[List[GameItem]], filter: GameFilter)
+@(products: List[List[GameItem]], filter: GameFilter, basket: List[GameItem])
 
-@main("Becky's Games: Our Games") {
+@main("Becky's Games: Our Games", basket) {
 
     <div id="options" class="container">
         <div class="row">

@@ -1,7 +1,7 @@
-@(searchTerm: String, products: List[GameItem])
+@(searchTerm: String, products: List[GameItem], basket: List[GameItem])
 
 
-@main(s"Search for '$searchTerm'") {
+@main(s"Search for '$searchTerm'", basket) {
 
     <h5>Results matching '@searchTerm'</h5>
     @if(products.isEmpty) {

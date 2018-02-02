@@ -1,7 +1,7 @@
 @(shoppingBasket: scala.collection.mutable.ArrayBuffer[GameItem])
 
 
-@main("Your shopping basket") {
+@main("Your shopping basket", shoppingBasket.toList) {
 
     <div class="row">
         @if(shoppingBasket.isEmpty) {
