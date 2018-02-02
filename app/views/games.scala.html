@@ -86,7 +86,6 @@
 
     <div id="games" class="row list-group">
         @for(product <- products(filter.pgNo - 1)) {
-            @if(filter.tags.isEmpty || product.tags.containsSlice(filter.tags)) {
                 <div class="item  col-xs-4 col-lg-4">
                     <div class="thumbnail">
                         <a href=@{s"/products/${product.id}"}>
@@ -113,7 +112,6 @@
                         </div>
                     </div>
                 </div>
-            }
         }
     </div>
 

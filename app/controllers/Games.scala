@@ -18,8 +18,7 @@ class Games extends Controller {
   var sortBy = "A-Z"
 
   def games = Action { implicit request: Request[AnyContent] =>
-    resetFilter()
-    val f = currentFilter()
+    val f = resetFilter()
     Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f), sortBy)), f))
   }
 
@@ -27,9 +26,8 @@ class Games extends Controller {
   def paginateGames(gameList: List[GameItem]): List[List[GameItem]] = gameList.grouped(9).toList
 
   def gamesPage(newPgNo: Int) = Action { implicit request: Request[AnyContent] =>
-    val sortedGames = sortGames(gamesList, currentFilter().sortBy)
-
-    val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, tags, newPgNo, sortBy)
+    val f = setFilter(pageNumber = newPgNo)
+    val sortedGames = sortGames(gamesList, f.sortBy)
 
     Ok(views.html.games(paginateGames(sortedGames), f))
   }
@@ -51,17 +49,18 @@ class Games extends Controller {
 
     filteredList = sortGames(filteredList, sortBy)
 
-    val f = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, filter.tags, newPgNo, sortBy)
+    val f = setFilter(pageNumber = newPgNo)
 
-    Ok(views.html.games(paginateGames(filteredList), f))
+    Ok(views.html.games(paginateGames(sortGames(filteredList)), f))
   }
 
   def filterGames(games: List[GameItem], f: GameFilter): List[GameItem] = {
-    val filteredList = games.filter(game => game.maxPlayers >= f.minPlayers && game.minPlayers <= f.maxPlayers)
+    var filteredList = games.filter(game => game.maxPlayers >= f.minPlayers && game.minPlayers <= f.maxPlayers)
+    filteredList = games.filter(game => game.tags.containsSlice(f.tags))
     filteredList.filter(game => game.price >= f.minPrice && game.price <= f.maxPrice)
   }
 
-  def sortGames(games: List[GameItem], sortBy: String): List[GameItem] = {
+  def sortGames(games: List[GameItem], sortBy: String = sortBy): List[GameItem] = {
     var sortedGames = games
     sortBy match {
       case "A-Z" => sortedGames = games.sortBy(_.name)
@@ -79,9 +78,10 @@ class Games extends Controller {
   }
 
   def gamesByCategory(category: String) = Action { implicit request: Request[AnyContent] =>
-    filter.tags.clear()
-    filter.tags += category
-    Ok(views.html.games(paginateGames(gamesList), filter))
+    tags.clear()
+    tags += category
+    val f = setFilter()
+    Ok(views.html.games(paginateGames(sortGames(filterGames(gamesList, f))), f))
   }
 
   def displayGame(gameName: String) = Action { implicit request: Request[AnyContent] =>
@@ -96,7 +96,10 @@ class Games extends Controller {
 
   def findGamesFromSearch(searchTerm: String): List[GameItem] = gamesList.filter(_.name.toLowerCase.contains(searchTerm.toLowerCase()))
 
-  def currentFilter(): GameFilter = GameFilter("", minPlayers, maxPlayers, minPrice, maxPrice, tags, pgNo, sortBy)
+  def setFilter(partialName: String = "", minPl: Int = minPlayers, maxPl: Int = maxPlayers, minPr: Double = minPrice,
+                maxPr: Double = maxPrice, tagsList: ArrayBuffer[String] = tags, pageNumber: Int = pgNo,
+                sortCriteria: String = sortBy): GameFilter =
+    GameFilter(partialName, minPl, maxPl, minPr, maxPr, tagsList, pageNumber, sortCriteria)
 
   def resetFilter(): GameFilter = {
     minPlayers = 1
@@ -106,7 +109,7 @@ class Games extends Controller {
     tags.clear()
     pgNo = 1
     sortBy = "A-Z"
-    currentFilter()
+    setFilter()
   }
 
 }
