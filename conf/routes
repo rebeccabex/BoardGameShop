@@ -20,7 +20,7 @@ GET         /basket                         controllers.Basket.basket
 GET         /basket/:itemName               controllers.Basket.addItemToBasket(itemName: String)
 GET         /basket/remove/:itemName        controllers.Basket.removeItemFromBasket(itemName: String)
 GET         /empty-basket                   controllers.Basket.removeAllFromBasket
-GET         /payment                        controllers.Application.pay
+GET         /payment                        controllers.Basket.pay
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                   controllers.Assets.at(path="/public", file)

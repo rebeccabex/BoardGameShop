@@ -1,5 +1,6 @@
 package controllers
 
+import models.ShoppingBasket
 import play.api.mvc._
 
 class Application extends Controller {
@@ -14,10 +15,6 @@ class Application extends Controller {
 
   def page = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.about("Hello world!"))
-  }
-
-  def pay = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.blankPage("You have paid for your items"))
   }
 
   def plannedUpdates = Action { implicit request: Request[AnyContent] =>
